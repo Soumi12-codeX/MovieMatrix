@@ -17,3 +17,7 @@ export const getMoviesByGenre = (genreId) => {
 export const getGenres = () =>{
     return axios.get(`${BASE_URL}/genres`);
 }
+
+export const searchMovies = (query) =>{
+    return axios.get(`${BASE_URL}/search?query=${query}`);
+}

@@ -2,11 +2,14 @@ package com.movie.demo.controller;
 
 import java.util.List;
 import com.movie.demo.model.Genre;
+import com.movie.demo.model.MovieDetails;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.demo.model.MovieMap;
@@ -42,5 +45,14 @@ public class MovieController {
     @GetMapping("/genres")
     public List<Genre> getGenres(){
         return movieService.getGenres();
+    }
+
+    @GetMapping("/{id}")
+    public MovieDetails getMovieDetails(@PathVariable int id){
+        return movieService.getMovieDetails(id);
+    }
+    @GetMapping("/search")
+    public List<MovieMap> searchMovies(@RequestParam String query){
+        return movieService.searchMovies(query);
     }
 }

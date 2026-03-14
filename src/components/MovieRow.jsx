@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 
-function MovieRow({ title, fetchMovies }) {
+function MovieRow({ title, fetchMovies, movies: providedMovies }) {
     const [movies, setMovies] = useState([]);
     const [startIndex, setStartIndex] = useState(0);
 
     const moviesPerSet = 6;
 
     useEffect(() => {
-        fetchMovies().then(res => {
+        if(fetchMovies){
+            fetchMovies().then(res => {
             setMovies(res.data);
         });
-    }, [fetchMovies]);
+        }
+        if(providedMovies) {
+        setMovies(providedMovies);
+        }
+    }, [fetchMovies, providedMovies]);
+
 
     const nextMovies = () => {
         if (startIndex + moviesPerSet >= movies.length) {
