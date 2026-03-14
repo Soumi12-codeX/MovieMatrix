@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function Navbar() {
   return (
     <nav className="bg-black text-white flex justify-between items-center py-4 px-8">
@@ -32,13 +34,17 @@ function Navbar() {
 
       <div className="space-x-4">
 
-        <button className="px-4 py-2 bg-green-700 rounded-full hover:bg-green-600 hover:scale-120 transition hover:shadow-[0_0_20px_rgba(34,197,94,0.6)]">
-          Login
-        </button>
+        <Link to="/login">
+          <button className="px-4 py-2 bg-green-700 rounded-full hover:bg-green-600 hover:scale-120 transition hover:shadow-[0_0_20px_rgba(34,197,94,0.6)]">
+            Login
+          </button>
+        </Link>
 
-        <button className="px-4 py-2 bg-red-700 rounded-full hover:bg-red-600 hover:scale-120 transition hover:shadow-[0_0_20px_rgba(239,68,68,0.6)]">
-          Sign Up
-        </button>
+        <Link to="/register">
+          <button className="px-4 py-2 bg-red-700 rounded-full hover:bg-red-600 hover:scale-120 transition hover:shadow-[0_0_20px_rgba(239,68,68,0.6)]">
+            Sign Up
+          </button>
+        </Link>
 
       </div>
 

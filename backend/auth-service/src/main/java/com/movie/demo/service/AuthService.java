@@ -45,7 +45,7 @@ public class AuthService {
     }
 
     public String login(LoginRequest request){
-        User user = userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail())
+        User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail())
         .orElseThrow(()-> new RuntimeException("User not found!"));
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){

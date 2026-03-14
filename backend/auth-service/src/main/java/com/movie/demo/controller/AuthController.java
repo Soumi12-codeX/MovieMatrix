@@ -1,7 +1,5 @@
 package com.movie.demo.controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,8 +26,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        String token = authService.login(request);
-
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(authService.login(request));
     }
 }
