@@ -68,10 +68,22 @@ function SearchBar({ onSearch }) {
                         <div
                             key={movie.id}
                             onClick={() => selectSuggestion(movie)}
-                            className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                            className="flex items-center px-4 py-2 hover:bg-gray-200 cursor-pointer"
                         >
-                            {movie.title}
-                        </div>
+                            {movie.poster_path ? (<img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title} className="w-10 h-14 object-cover mr-2" />) : (<div className="w-10 h-14 bg-gray-400 rounded"></div>)}
+
+                            
+                                <p className="font semi-bold">
+                                    {movie.title}
+                            
+                                <span className="text-gray-500 ml-2 text-xs">
+                                    ({movie.release_date?.slice(0,4)})
+                                </span>
+                                </p>
+                
+                            </div>
+                            
+                    
 
                     ))}
 

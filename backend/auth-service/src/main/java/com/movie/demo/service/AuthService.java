@@ -1,7 +1,11 @@
 package com.movie.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
 import com.movie.demo.model.User;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +25,8 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String register(RegisterRequest request){
-        if(!request.getPassword().equals(request.getConfirmPassword())){
+    public String register(RegisterRequest request) {
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new RuntimeException("Passwords do not match");
         }
 
@@ -38,19 +42,32 @@ public class AuthService {
         user.setCountry(request.getCountry());
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        
+
         userRepository.save(user);
 
         return "User registered successfully!";
     }
 
-    public String login(LoginRequest request){
+    public String login(LoginRequest request) {
         User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail())
-        .orElseThrow(()-> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
-        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid Exception");
         }
         return jwtUtil.generateToken(user.getUsername());
+    }
+
+    public ResponseEntity<?> getProfile() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    user.setPassword(null);
+                    return ResponseEntity.ok(user);
+                }).orElse(ResponseEntity.notFound().build());
     }
 }
