@@ -55,7 +55,7 @@ function SearchBar({ onSearch }) {
                 value={query}
                 onChange={handleChange}
                 onKeyDown={handleEnter}
-                className="w-full px-5 py-3 rounded-lg text-black"
+                className="w-full px-5 py-3 rounded-lg text-white bg-transparent border border-purple-500 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 placeholder:text-white"
             />
 
             {/* SUGGESTIONS */}
