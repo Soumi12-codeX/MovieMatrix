@@ -10,23 +10,25 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name="username", nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name="movie_id", nullable = false)
     private Long movieId;
 
+    @Column(name="movie_title")
     private String movieTitle;
 
+    @Column(name="poster_path")
     private String posterPath;
 
-    @Column(nullable = false)
+    @Column(name="rating",nullable = false)
     private Integer rating;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name="content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(updatable = false)
+    @Column(name="created_at", updatable = false)
     private LocalDateTime createdAt;
 
     // Called automatically by Hibernate just before INSERT
