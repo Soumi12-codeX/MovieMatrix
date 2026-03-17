@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+
 import Hero from "../components/Hero";
 import MovieRow from "../components/MovieRow";
 import { useState } from "react";
@@ -33,7 +33,6 @@ function Home() {
 
     return (
         <div className="bg-black min-h-screen">
-            <Navbar />
             <Hero onSearch={handleSearch} />
             {searchQuery && (
                 searchResults.length > 0 ? (

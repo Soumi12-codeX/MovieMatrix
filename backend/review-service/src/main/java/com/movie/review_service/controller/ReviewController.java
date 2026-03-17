@@ -23,7 +23,7 @@ import com.movie.review_service.models.WatchlistItem;
 import com.movie.review_service.service.ReviewService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/review")
 @CrossOrigin
 public class ReviewController {
     

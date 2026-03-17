@@ -2,12 +2,8 @@ package com.movie.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import com.movie.demo.dto.LoginRequest;
 import com.movie.demo.dto.RegisterRequest;
@@ -15,23 +11,33 @@ import com.movie.demo.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
+
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(){
-        return ResponseEntity.ok(authService.getProfile());
+    public ResponseEntity<?> getProfile(Authentication authentication) {
+        // Check if user is actually authenticated (not anonymous)
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication.getName().equals("anonymousUser")) {
+            return ResponseEntity.status(401)
+                    .body("Not authenticated — please provide a valid token");
+        }
+
+        // Pass the username to the service
+        return authService.getProfile(authentication.getName());
     }
 }
