@@ -88,7 +88,7 @@ public class ReviewController {
 
     //get watchlist for a user
     @GetMapping("/watchlist")
-    public ResponseEntity<List<WatchlistItem>> getWatchlist(@RequestBody WatchlistItem item){
+    public ResponseEntity<List<WatchlistItem>> getWatchlist(){
         String username = getCurrentUsername();
         return ResponseEntity.ok(reviewService.getWatchList(username));
     }

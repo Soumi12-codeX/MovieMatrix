@@ -166,7 +166,7 @@ public class ReviewService {
         
         status.put("inWatchlist", watchlistRepo.existsByUsernameAndMovieId(username, movieId));
         
-        status.put("inFvaorites", favoriteRepo.existsByUsernameAndMovieId(username, movieId));
+        status.put("inFavorites", favoriteRepo.existsByUsernameAndMovieId(username, movieId));
         
         status.put("hasReviewed", reviewRepo.existsByUsernameAndMovieId(username, movieId));
         

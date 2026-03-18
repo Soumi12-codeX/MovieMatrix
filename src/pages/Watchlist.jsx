@@ -17,6 +17,7 @@ function Watchlist() {
     const fetchWatchlist = async () => {
         try {
             const res = await reviewAPI.get("/review/watchlist");
+        
             setItems(res.data || []);
         } catch (err) {
             console.error(err);
