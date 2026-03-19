@@ -33,7 +33,6 @@ public class WatchlistItem {
         this.addedAt = LocalDateTime.now();
     }
 
-    // ── GETTERS ───────────────────────────────────────────────────────────────
     public Long getId() {
         return id;
     }
@@ -64,13 +63,12 @@ public class WatchlistItem {
 
     public boolean isWatched() {
         return watched;
-    } // boolean uses "is" not "get"
+    } 
 
     public LocalDateTime getAddedAt() {
         return addedAt;
     }
 
-    // ── SETTERS ───────────────────────────────────────────────────────────────
     public void setId(Long id) {
         this.id = id;
     }

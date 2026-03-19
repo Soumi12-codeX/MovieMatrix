@@ -7,11 +7,10 @@ public class ReviewRequest {
     private Integer rating;
     private String content;
 
-    // No-arg constructor — required by Jackson to create the object from JSON
+    
     public ReviewRequest() {
     }
 
-    // All-arg constructor — handy for tests
     public ReviewRequest(Long movieId, String movieTitle, String posterPath,
             Integer rating, String content) {
         this.movieId = movieId;
@@ -21,7 +20,6 @@ public class ReviewRequest {
         this.content = content;
     }
 
-    // ── GETTERS ───────────────────────────────────────────────────────────────
     public Long getMovieId() {
         return movieId;
     }
@@ -42,7 +40,6 @@ public class ReviewRequest {
         return content;
     }
 
-    // ── SETTERS ───────────────────────────────────────────────────────────────
     public void setMovieId(Long movieId) {
         this.movieId = movieId;
     }

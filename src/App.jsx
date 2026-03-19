@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Footer from "./components/Footer";
+import About  from "./pages/About";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -21,7 +24,9 @@ function App() {
                 <Route path="/profile"    element={<Profile />} />
                 <Route path="/watchlist"  element={<Watchlist />} />
                 <Route path="/favorites"  element={<Favorites />} />
+                <Route path="/about" element={<About />} />
             </Routes>
+            <Footer />
         </Router>
     );
 }

@@ -21,22 +21,17 @@ function Login() {
         try {
             const res = await API.post("/auth/login", form);
 
-            // Log exactly what the server returns so we can see it
             console.log("=== LOGIN RESPONSE ===");
             console.log("typeof res.data:", typeof res.data);
             console.log("res.data:", res.data);
-
-            // ── Handle BOTH response shapes ───────────────────────────────
-            // Shape A: res.data = "eyJhbGci..."  (plain string — old backend)
-            // Shape B: res.data = { token: "eyJ...", username: "soumi1204" }
             let token = null;
             let username = form.username;
 
             if (typeof res.data === "string") {
-                // Backend returns plain JWT string directly
+               
                 token = res.data.trim();
             } else if (typeof res.data === "object" && res.data !== null) {
-                // Backend returns JSON object
+               
                 token    = res.data.token || res.data.jwt || res.data.accessToken;
                 username = res.data.username || form.username;
             }

@@ -30,7 +30,6 @@ public class FavoriteItem {
         this.addedAt = LocalDateTime.now();
     }
 
-    // ── GETTERS ───────────────────────────────────────────────────────────────
     public Long getId() {
         return id;
     }
@@ -63,7 +62,6 @@ public class FavoriteItem {
         return addedAt;
     }
 
-    // ── SETTERS ───────────────────────────────────────────────────────────────
     public void setId(Long id) {
         this.id = id;
     }

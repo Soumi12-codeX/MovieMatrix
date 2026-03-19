@@ -25,7 +25,6 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // register — unchanged
     public String register(RegisterRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new RuntimeException("Passwords do not match");
@@ -61,9 +60,6 @@ public class AuthService {
         return response;
     }
 
-    // ── FIXED getProfile — takes username as parameter ────────────────────────
-    // Previously read from SecurityContextHolder internally — unreliable.
-    // Now the controller passes the username directly after verifying auth.
     public ResponseEntity<?> getProfile(String username) {
         return userRepository.findByUsername(username)
                 .map(user -> {

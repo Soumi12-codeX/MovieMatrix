@@ -112,26 +112,6 @@ public class MovieService {
         }
     }
 
-    /*
-     * public List<MovieMap> searchMovies(String query){
-     * try{
-     * MovieResponse response = webClient.get()
-     * .uri(baseUrl + "/search/movie?api_key=" + apiKey + "&query=" + query)
-     * .retrieve()
-     * .bodyToMono(MovieResponse.class)
-     * .block();
-     * if(response != null){
-     * return response.getResults();
-     * }
-     * return Collections.emptyList();
-     * }
-     * catch(Exception e){
-     * e.printStackTrace();
-     * return Collections.emptyList();
-     * }
-     * }
-     */
-
     public List<MovieMap> searchMovies(String query){
     try{
 
