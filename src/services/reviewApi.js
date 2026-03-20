@@ -1,10 +1,7 @@
-// reviewApi.js — FIXED
-// Location: src/services/reviewApi.js
-
 import axios from "axios";
 
 const reviewAPI = axios.create({
-    baseURL: "http://localhost:8081"
+    baseURL: import.meta.env.VITE_REVIEW_URL || "http://localhost:8081"
 });
 
 reviewAPI.interceptors.request.use((req) => {
@@ -12,7 +9,6 @@ reviewAPI.interceptors.request.use((req) => {
     if (token && token !== "null" && token !== "undefined") {
         req.headers.Authorization = `Bearer ${token}`;
     }
-
     return req;
 });
 

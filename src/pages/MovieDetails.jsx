@@ -22,7 +22,7 @@ function MovieDetails() {
 
     const fetchMovie = async () => {
         try {
-            const res = await axios.get(`http://localhost:8082/movies/${id}`);
+            const res = await axios.get(`${import.meta.env.VITE_MOVIE_URL}/movies/${id}`);
             setMovie(res.data);
         } catch (err) { console.error(err); }
     };
