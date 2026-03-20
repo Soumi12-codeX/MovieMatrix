@@ -11,7 +11,10 @@ import com.movie.demo.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://movie-matrix-gamma.vercel.app"
+})
 public class AuthController {
 
     @Autowired
