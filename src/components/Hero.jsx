@@ -7,35 +7,9 @@ import reviewAPI from "../services/reviewApi";
 const IMAGE_BASE = "https://image.tmdb.org/t/p/original";
 
 function Hero({ onSearch }) {
-    const { id } = useParams();
+    
     const [movies, setMovies] = useState([]);
-    const [index, setIndex] = useState(0);
-    const [inWatchlist, setInWatchlist] = useState(false);
-
-    const showToast = (message, type = "success") => {
-        setToast({ message, type });
-        setTimeout(() => setToast(null), 3000);
-    };
-
-    const handleWatchlistToggle = async () => {
-        if (!localStorage.getItem("token")) { showToast("Please login first", "error"); return; }
-        setWatchlistLoading(true);
-        try {
-            if (inWatchlist) {
-                await reviewAPI.delete(`/review/watchlist/${movie.id}`);
-                setInWatchlist(false); showToast("Removed from watchlist");
-            } else {
-                await reviewAPI.post("/review/watchlist", {
-                    movieId: movie.id, movieTitle: movie.title,
-                    posterPath: movie.poster_path,
-                    releaseYear: movie.release_date?.split("-")[0] || "",
-                    voteAverage: movie.vote_average,
-                });
-                setInWatchlist(true); showToast("Added to watchlist ✓");
-            }
-        } catch { showToast("Something went wrong", "error"); }
-        finally { setWatchlistLoading(false); }
-    };
+    const [index, setIndex]   = useState(0);
 
     useEffect(() => {
         getTop5Movies().then((res) => setMovies(res.data));
@@ -102,8 +76,9 @@ function Hero({ onSearch }) {
                         <button
                             key={i}
                             onClick={() => setIndex(i)}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? "w-6 bg-red-500" : "w-1.5 bg-white/40"
-                                }`}
+                            className={`h-1.5 rounded-full transition-all duration-300 ${
+                                i === index ? "w-6 bg-red-500" : "w-1.5 bg-white/40"
+                            }`}
                             aria-label={`Go to slide ${i + 1}`}
                         />
                     ))}
