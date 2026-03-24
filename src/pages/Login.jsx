@@ -48,7 +48,7 @@ function Login() {
             // Save to localStorage
             localStorage.setItem("token", token);
             localStorage.setItem("username", username);
-
+            window.dispatchEvent(new Event("authChange"));
             // Verify save worked
             console.log("Saved to localStorage:");
             console.log("  token:", localStorage.getItem("token")?.substring(0, 30) + "...");

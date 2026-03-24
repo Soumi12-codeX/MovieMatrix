@@ -3,16 +3,24 @@ import { useState, useEffect, useRef } from "react";
 
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername]     = useState("");
-    const [menuOpen, setMenuOpen]     = useState(false);
-    const navigate  = useNavigate();
-    const menuRef   = useRef(null);
+    const [username, setUsername] = useState("");
+    const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const menuRef = useRef(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        const uname = localStorage.getItem("username");
-        setIsLoggedIn(!!token);
-        setUsername(uname || "");
+        const syncAuth = () => {
+            const token = localStorage.getItem("token");
+            const uname = localStorage.getItem("username");
+            setIsLoggedIn(!!token);
+            setUsername(uname || "");
+        };
+
+        syncAuth(); // run on mount
+
+        // listen for login/logout events
+        window.addEventListener("authChange", syncAuth);
+        return () => window.removeEventListener("authChange", syncAuth);
     }, []);
 
     // Close menu on outside click
@@ -31,8 +39,10 @@ function Navbar() {
         localStorage.removeItem("username");
         setIsLoggedIn(false);
         setMenuOpen(false);
+        window.dispatchEvent(new Event("authChange")); // ← add this
         navigate("/login");
     };
+
 
     return (
         <nav ref={menuRef} className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-violet-900/25 text-white">
@@ -104,15 +114,14 @@ function Navbar() {
             </div>
 
             {/* Mobile dropdown — shown when logged in */}
-            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                menuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
-            }`}>
+            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+                }`}>
                 <div className="bg-black/95 border-t border-violet-900/30 px-4 py-3 flex flex-col gap-1">
-                    <MobileNavLink to="/"          onClick={() => setMenuOpen(false)} icon="🏠">Home</MobileNavLink>
-                    <MobileNavLink to="/profile"   onClick={() => setMenuOpen(false)} icon="👤">Profile</MobileNavLink>
+                    <MobileNavLink to="/" onClick={() => setMenuOpen(false)} icon="🏠">Home</MobileNavLink>
+                    <MobileNavLink to="/profile" onClick={() => setMenuOpen(false)} icon="👤">Profile</MobileNavLink>
                     <MobileNavLink to="/watchlist" onClick={() => setMenuOpen(false)} icon="🎬">Watchlist</MobileNavLink>
                     <MobileNavLink to="/favorites" onClick={() => setMenuOpen(false)} icon="❤️">Favorites</MobileNavLink>
-                    <MobileNavLink to="/about"     onClick={() => setMenuOpen(false)} icon="ℹ️">About</MobileNavLink>
+                    <MobileNavLink to="/about" onClick={() => setMenuOpen(false)} icon="ℹ️">About</MobileNavLink>
 
                     <button onClick={handleLogout}
                         className="mt-1 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-900/20 hover:text-red-300 transition text-left border border-red-900/20">
