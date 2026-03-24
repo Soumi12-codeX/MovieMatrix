@@ -4,13 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMethod;
 import com.movie.demo.dto.LoginRequest;
 import com.movie.demo.dto.RegisterRequest;
 import com.movie.demo.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(
+    origins = {
+        "http://localhost:5173",
+        "https://movie-matrix-gamma.vercel.app"
+    },
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+    },
+    allowCredentials = "true"
+)
 public class AuthController {
 
     @Autowired
