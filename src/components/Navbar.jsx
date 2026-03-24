@@ -39,7 +39,7 @@ function Navbar() {
         localStorage.removeItem("username");
         setIsLoggedIn(false);
         setMenuOpen(false);
-        window.dispatchEvent(new Event("authChange")); // ← add this
+        window.dispatchEvent(new Event("authChange")); 
         navigate("/login");
     };
 
