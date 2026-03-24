@@ -6,14 +6,14 @@ import ReviewSection from "../components/ReviewSection";
 
 function MovieDetails() {
     const { id } = useParams();
-    const [movie, setMovie]                       = useState(null);
-    const [activeCard, setActiveCard]             = useState(0);
-    const [inWatchlist, setInWatchlist]           = useState(false);
-    const [inFavorites, setInFavorites]           = useState(false);
+    const [movie, setMovie] = useState(null);
+    const [activeCard, setActiveCard] = useState(0);
+    const [inWatchlist, setInWatchlist] = useState(false);
+    const [inFavorites, setInFavorites] = useState(false);
     const [watchlistLoading, setWatchlistLoading] = useState(false);
     const [favoritesLoading, setFavoritesLoading] = useState(false);
-    const [toast, setToast]                       = useState(null);
-    const [castStart, setCastStart]               = useState(0);
+    const [toast, setToast] = useState(null);
+    const [castStart, setCastStart] = useState(0);
 
     const CAST_PER_PAGE = 3;
 
@@ -81,18 +81,18 @@ function MovieDetails() {
         finally { setFavoritesLoading(false); }
     };
 
-    const getDirector    = () => movie?.credits?.crew?.find((m) => m.job === "Director")?.name || "N/A";
-    const getStoryWriter = () => movie?.credits?.crew?.find((m) => ["Story","Story Writer","Writer","Screenplay"].includes(m.job))?.name || "N/A";
-    const getNetWorth    = () => movie?.revenue > 0 ? new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(movie.revenue) : "N/A";
-    const getGenres      = () => movie?.genres?.map((g) => g.name).join(", ") || "N/A";
+    const getDirector = () => movie?.credits?.crew?.find((m) => m.job === "Director")?.name || "N/A";
+    const getStoryWriter = () => movie?.credits?.crew?.find((m) => ["Story", "Story Writer", "Writer", "Screenplay"].includes(m.job))?.name || "N/A";
+    const getNetWorth = () => movie?.revenue > 0 ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(movie.revenue) : "N/A";
+    const getGenres = () => movie?.genres?.map((g) => g.name).join(", ") || "N/A";
 
     const factsCards = [
-        { label:"Duration",     value: movie?.runtime ? `${movie.runtime} min` : "N/A", icon:"⏱" },
-        { label:"Director",     value: getDirector(),    icon:"🎬" },
-        { label:"Story Writer", value: getStoryWriter(), icon:"✍️" },
-        { label:"Genre",        value: getGenres(),      icon:"🎭" },
-        { label:"Release Date", value: movie?.release_date || "N/A", icon:"📅" },
-        { label:"Net Worth",    value: getNetWorth(),    icon:"💰" },
+        { label: "Duration", value: movie?.runtime ? `${movie.runtime} min` : "N/A", icon: "⏱" },
+        { label: "Director", value: getDirector(), icon: "🎬" },
+        { label: "Story Writer", value: getStoryWriter(), icon: "✍️" },
+        { label: "Genre", value: getGenres(), icon: "🎭" },
+        { label: "Release Date", value: movie?.release_date || "N/A", icon: "📅" },
+        { label: "Net Worth", value: getNetWorth(), icon: "💰" },
     ];
 
     const onNextCard = () => setActiveCard((prev) => (prev + 1) % factsCards.length);
@@ -146,10 +146,10 @@ function MovieDetails() {
                 {factsCards.map((card, index) => {
                     const progress = (index - activeCard + factsCards.length) % factsCards.length;
                     if (progress > 2) return null;
-                    const sizeClass    = progress === 0 ? `${compact ? "h-28" : "h-44"} w-full` : `${compact ? "h-20" : "h-36"} w-11/12`;
+                    const sizeClass = progress === 0 ? `${compact ? "h-28" : "h-44"} w-full` : `${compact ? "h-20" : "h-36"} w-11/12`;
                     const opacityClass = progress === 0 ? "opacity-100" : "opacity-60";
-                    const zIndex       = 50 - progress;
-                    const translate    = progress === 0 ? "translate-x-0" : progress === 1 ? "-translate-x-2" : "-translate-x-4";
+                    const zIndex = 50 - progress;
+                    const translate = progress === 0 ? "translate-x-0" : progress === 1 ? "-translate-x-2" : "-translate-x-4";
                     return (
                         <div
                             key={card.label}
@@ -174,9 +174,8 @@ function MovieDetails() {
                     <button
                         key={i}
                         onClick={() => setActiveCard(i)}
-                        className={`h-1 rounded-full transition-all duration-300 ${
-                            i === activeCard ? "w-5 bg-violet-400" : "w-1.5 bg-violet-900"
-                        }`}
+                        className={`h-1 rounded-full transition-all duration-300 ${i === activeCard ? "w-5 bg-violet-400" : "w-1.5 bg-violet-900"
+                            }`}
                     />
                 ))}
             </div>
@@ -188,11 +187,10 @@ function MovieDetails() {
 
             {/* ── TOAST ─────────────────────────────────────────────────────── */}
             {toast && (
-                <div className={`fixed top-4 left-4 right-4 sm:left-auto sm:top-6 sm:right-6 sm:w-auto z-[100] px-5 py-3 rounded-xl text-white text-sm font-semibold shadow-2xl border ${
-                    toast.type === "error"
+                <div className={`fixed top-4 left-4 right-4 sm:left-auto sm:top-6 sm:right-6 sm:w-auto z-[100] px-5 py-3 rounded-xl text-white text-sm font-semibold shadow-2xl border ${toast.type === "error"
                         ? "bg-red-900/90 border-red-600"
                         : "bg-violet-900/90 border-violet-500"
-                }`}>
+                    }`}>
                     {toast.message}
                 </div>
             )}
@@ -233,32 +231,26 @@ function MovieDetails() {
                     </div>
 
                     {/* Action buttons */}
-                    <div className="flex gap-3">
+                    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
                         <button
                             onClick={handleWatchlistToggle}
                             disabled={watchlistLoading}
-                            className={`flex-1 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center justify-center gap-2 ${
-                                inWatchlist
-                                    ? "bg-violet-800 border border-violet-500 text-violet-200"
+                            className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${inWatchlist
+                                    ? "bg-green-600 border border-green-400 text-white"
                                     : "bg-violet-600 text-white hover:bg-violet-500"
-                            }`}
+                                }`}
                         >
-                            {watchlistLoading
-                                ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                : inWatchlist ? "✓ In Watchlist" : "+ Watchlist"}
+                            {watchlistLoading ? "..." : inWatchlist ? "✓ In Watchlist" : "+ Add to Watchlist"}
                         </button>
                         <button
                             onClick={handleFavoritesToggle}
                             disabled={favoritesLoading}
-                            className={`flex-1 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center justify-center gap-2 ${
-                                inFavorites
-                                    ? "bg-pink-900 border border-pink-600 text-pink-200"
+                            className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${inFavorites
+                                    ? "bg-pink-600 border border-pink-400 text-white"
                                     : "bg-pink-700 text-white hover:bg-pink-600"
-                            }`}
+                                }`}
                         >
-                            {favoritesLoading
-                                ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                : inFavorites ? "❤️ Favorited" : "♡ Favorites"}
+                            {favoritesLoading ? "..." : inFavorites ? "❤️ Favorited" : "♡ Add to Favorites"}
                         </button>
                     </div>
                 </div>
@@ -292,11 +284,10 @@ function MovieDetails() {
                     <button
                         onClick={handleWatchlistToggle}
                         disabled={watchlistLoading}
-                        className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${
-                            inWatchlist
+                        className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${inWatchlist
                                 ? "bg-violet-800 border border-violet-500 text-violet-200 hover:bg-violet-900"
                                 : "bg-violet-600 text-white hover:bg-violet-500 hover:shadow-violet-500/40 hover:shadow-xl"
-                        }`}
+                            }`}
                     >
                         {watchlistLoading
                             ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -305,11 +296,10 @@ function MovieDetails() {
                     <button
                         onClick={handleFavoritesToggle}
                         disabled={favoritesLoading}
-                        className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${
-                            inFavorites
+                        className={`px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg transition-all disabled:opacity-60 flex items-center gap-2 ${inFavorites
                                 ? "bg-pink-900 border border-pink-600 text-pink-200 hover:bg-pink-950"
                                 : "bg-pink-700 text-white hover:bg-pink-600 hover:shadow-pink-500/40 hover:shadow-xl"
-                        }`}
+                            }`}
                     >
                         {favoritesLoading
                             ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -374,9 +364,8 @@ function MovieDetails() {
                                 <button
                                     key={i}
                                     onClick={() => setCastStart(i * CAST_PER_PAGE)}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                                        i === currentCastPage ? "w-5 bg-violet-400" : "w-1.5 bg-violet-900"
-                                    }`}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === currentCastPage ? "w-5 bg-violet-400" : "w-1.5 bg-violet-900"
+                                        }`}
                                     aria-label={`Cast page ${i + 1}`}
                                 />
                             ))}

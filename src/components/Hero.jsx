@@ -9,45 +9,49 @@ const IMAGE_BASE = "https://image.tmdb.org/t/p/original";
 function Hero({ onSearch }) {
     const [movies, setMovies] = useState([]);
     const [index, setIndex] = useState(0);
+    const [inWatchlist, setInWatchlist] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         getTop5Movies().then((res) => setMovies(res.data));
     }, []);
 
+    // Check status whenever the slide index changes
     useEffect(() => {
-        if (movies.length === 0) return;
-        const interval = setInterval(() => {
-            setIndex((prev) => (prev + 1) % movies.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [movies]);
+        if (movies.length > 0) {
+            checkWatchlistStatus(movies[index].id);
+        }
+    }, [index, movies]);
 
-    const flashMessage = (msg) => {
-        setMessage(msg);
-        setTimeout(() => setMessage(null), 3000);
+    const checkWatchlistStatus = async (movieId) => {
+        if (!localStorage.getItem("token")) return;
+        try {
+            const res = await reviewAPI.get(`/review/status/${movieId}`);
+            setInWatchlist(res.data.inWatchlist);
+        } catch (err) {
+            console.error("Status check failed", err);
+        }
     };
 
-    const handleWatchlist = async (movie) => {
-        if (!localStorage.getItem("token")) {
-            flashMessage("Please login first");
-            return;
-        }
-
+    const handleWatchlistToggle = async (movie) => {
+        if (!localStorage.getItem("token")) return;
         setLoading(true);
         try {
-            await reviewAPI.post("/review/watchlist", {
-                movieId: movie.id,
-                movieTitle: movie.title,
-                posterPath: movie.poster_path,
-                releaseYear: movie.release_date?.split("-")[0] || "",
-                voteAverage: movie.vote_average,
-            });
-            flashMessage("Added to Watchlist ✓");
+            if (inWatchlist) {
+                await reviewAPI.delete(`/review/watchlist/${movie.id}`);
+                setInWatchlist(false);
+            } else {
+                await reviewAPI.post("/review/watchlist", {
+                    movieId: movie.id,
+                    movieTitle: movie.title,
+                    posterPath: movie.poster_path,
+                    releaseYear: movie.release_date?.split("-")[0] || "",
+                    voteAverage: movie.vote_average,
+                });
+                setInWatchlist(true);
+            }
         } catch (err) {
             console.error(err);
-            flashMessage("Error adding to watchlist");
         } finally {
             setLoading(false);
         }
@@ -71,7 +75,7 @@ function Hero({ onSearch }) {
                 className="absolute inset-0 w-full h-full object-cover opacity-40"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80" />
-            
+
             <div className="relative z-20 flex justify-center pt-8 sm:pt-10 px-4">
                 <div className="w-full max-w-xl">
                     <SearchBar onSearch={onSearch} />
@@ -92,12 +96,15 @@ function Hero({ onSearch }) {
                                 Explore Now
                             </button>
                         </Link>
-                        <button 
-                            onClick={() => handleWatchlist(movie)}
+                        <button
+                            onClick={() => handleWatchlistToggle(movie)}
                             disabled={loading}
-                            className="bg-black/60 text-white px-5 sm:px-6 py-2 rounded-md hover:bg-gray-800 transition text-sm sm:text-base font-medium border border-white/20 disabled:opacity-50"
+                            className={`px-5 sm:px-6 py-2 rounded-md transition text-sm sm:text-base font-medium border ${inWatchlist
+                                    ? "bg-green-600 border-green-500 text-white"
+                                    : "bg-black/60 text-white border-white/20 hover:bg-gray-800"
+                                }`}
                         >
-                            {loading ? "Adding..." : "+ Add to Watchlist"}
+                            {loading ? "..." : inWatchlist ? "✓ In Watchlist" : "+ Add to Watchlist"}
                         </button>
                     </div>
                 </div>
@@ -110,9 +117,8 @@ function Hero({ onSearch }) {
                         <button
                             key={i}
                             onClick={() => setIndex(i)}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${
-                                i === index ? "w-6 bg-red-500" : "w-1.5 bg-white/40"
-                            }`}
+                            className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? "w-6 bg-red-500" : "w-1.5 bg-white/40"
+                                }`}
                         />
                     ))}
                 </div>
