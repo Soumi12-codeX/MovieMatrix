@@ -34,7 +34,7 @@ function Watchlist() {
         });
     };
 
-    // Remove a movie — optimistic: remove from UI immediately
+    // Remove a movie
     const handleRemove = async (movieId) => {
         setProcessing(movieId, true);
         setItems((prev) => prev.filter((i) => i.movieId !== movieId));
